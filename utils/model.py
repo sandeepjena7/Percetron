@@ -14,6 +14,8 @@ class Perceptron:
   def fit(self,x,y):
     self.x = x
     self.y = y
+    Weights_all = []
+
 
     x_with_bias = np.c_[self.x,-np.ones((len(self.x),1))]
     print(f"X with bias:\n {x_with_bias}")
@@ -21,15 +23,22 @@ class Perceptron:
     for epoch in range(self.epochs):
       print(f"for epoch:\t {epoch}")
       print("--"*10)
-
+      Weights_all.append(self.weights)
       y_hat = self.activationfunction(x_with_bias,self.weights)# foraward propagation
       print(f"Predicted value after forward pass:\n{y_hat}")
 
       self.error = self.y-y_hat
-      print(f"error:\n{self.error}")
+      # print(f"error:\n{self.error}")
+      print(f"Total loss is {np.sum(self.error)}")
+      if np.sum(self.error) ==0:
+        
+        break
+
+
       self.weights = self.weights + self.eta*np.dot(x_with_bias.T,self.error)# backward propagation
       print(f"updated weights after epoch:\n {epoch}/{self.epochs} :\n {self.weights} ")
       print("===="*30)
+    # print(Weights_all)
 
   
   def predict(self,x):
