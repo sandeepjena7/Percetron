@@ -1,9 +1,12 @@
 import  numpy as np
+import logging
+from tqdm import tqdm
+
 
 class Perceptron:
   def __init__(self,eta,epochs):
     self.weights = np.random.randn(3)*1e-4
-    print(f"intial weight before training:\n {self.weights}")
+    logging.info(f"intial weight before training:\n {self.weights}")
     self.eta = eta # eta learning rate
     self.epochs = epochs
 
@@ -18,27 +21,27 @@ class Perceptron:
 
 
     x_with_bias = np.c_[self.x,-np.ones((len(self.x),1))]
-    print(f"X with bias:\n {x_with_bias}")
+    logging.info(f"X with bias:\n {x_with_bias}")
 
-    for epoch in range(self.epochs):
-      print(f"for epoch:\t {epoch}")
-      print("--"*10)
+    for epoch in tqdm(range(self.epochs),total=self.epochs,desc='training the model'):
+      logging.info(f"for epoch:\t {epoch}")
+      logging.info("--"*10)
       Weights_all.append(self.weights)
       y_hat = self.activationfunction(x_with_bias,self.weights)# foraward propagation
-      print(f"Predicted value after forward pass:\n{y_hat}")
+      logging.info(f"Predicted value after forward pass:\n{y_hat}")
 
       self.error = self.y-y_hat
-      # print(f"error:\n{self.error}")
-      print(f"Total loss is {np.sum(self.error)}")
+      # logging.info(f"error:\n{self.error}")
+      logging.info(f"Total loss is {np.sum(self.error)}")
       if np.sum(self.error) ==0:
         
         break
 
 
       self.weights = self.weights + self.eta*np.dot(x_with_bias.T,self.error)# backward propagation
-      print(f"updated weights after epoch:\n {epoch}/{self.epochs} :\n {self.weights} ")
-      print("===="*30)
-    # print(Weights_all)
+      logging.info(f"updated weights after epoch:\n {epoch}/{self.epochs} :\n {self.weights} ")
+      logging.info("===="*30)
+    # logging.info(Weights_all)
 
   
   def predict(self,x):
@@ -46,5 +49,5 @@ class Perceptron:
     return self.activationfunction(x_with_bias,self.weights)
   def total_loss(self):
     toatal_loss = np.sum(self.error)
-    print(f"total loss: {toatal_loss}")
+    logging.info(f"total loss: {toatal_loss}")
     return toatal_loss

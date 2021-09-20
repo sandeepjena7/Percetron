@@ -4,6 +4,7 @@ import numpy as np
 import joblib # for saving my model as a binar file
 from matplotlib.colors import ListedColormap
 import os
+import logging
 
 
 
@@ -18,6 +19,7 @@ def prepare_data(df):
       tuple: it returns the tuple of the dependent variable and indepedent variable
 
   """
+  logging.info("preparing the data by sergerts the indepedent variable ")
   x = df.drop('y',axis=1)
   y = df["y"]
   return x,y
@@ -30,12 +32,13 @@ def save_Model(model,filename):
       filename (str): path  to save the trained model
       filename
   """
+  logging.info("saving the trianed model")
   modle = "model"
   os.makedirs(modle,exist_ok=True) # if the model dir then it not create dir
   path = os.path.join('model',filename)
   
   joblib.dump(model,path)
-
+  logging.info(f"the saving the file at {path}")
 def save_plot(df, file_name, model):
   """It is save the plot  file
 
@@ -45,6 +48,7 @@ def save_plot(df, file_name, model):
       model : it is the traiened model
   """
   def _create_base_plot(df):
+    logging.info('creating the base plot')
     df.plot(kind="scatter", x="x1", y="x2", c="y", s=100, cmap="winter")
     plt.axhline(y=0, color="black", linestyle="--", linewidth=1)
     plt.axvline(x=0, color="black", linestyle="--", linewidth=1)
@@ -52,6 +56,7 @@ def save_plot(df, file_name, model):
     figure.set_size_inches(10, 8)
 
   def _plot_decision_regions(X, y, classfier, resolution=0.02):
+    logging.info('ploting the decision  boundary')
     colors = ("red", "blue", "lightgreen", "gray", "cyan")
     cmap = ListedColormap(colors[: len(np.unique(y))])
 
@@ -83,3 +88,4 @@ def save_plot(df, file_name, model):
   os.makedirs(plot_dir, exist_ok=True) # ONLY CREATE IF MODEL_DIR DOESN"T EXISTS
   plotPath = os.path.join(plot_dir, file_name) # model/filename
   plt.savefig(plotPath)
+  logging.info(f"saving  in the {plotPath}")
