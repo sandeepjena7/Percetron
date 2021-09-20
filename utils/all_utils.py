@@ -9,12 +9,27 @@ import os
 
 
 def prepare_data(df):
+  """It is used seprate features and labels for
+
+  Args:
+      df (pd Dataframe): its the pandas Dataframe
+
+  Returns:
+      tuple: it returns the tuple of the dependent variable and indepedent variable
+
+  """
   x = df.drop('y',axis=1)
   y = df["y"]
   return x,y
 
 def save_Model(model,filename):
-  """Save the model in in file"""
+  """This save the trainedn model to
+
+  Args:
+      model (pyton object): trained model
+      filename (str): path  to save the trained model
+      filename
+  """
   modle = "model"
   os.makedirs(modle,exist_ok=True) # if the model dir then it not create dir
   path = os.path.join('model',filename)
@@ -22,6 +37,13 @@ def save_Model(model,filename):
   joblib.dump(model,path)
 
 def save_plot(df, file_name, model):
+  """It is save the plot  file
+
+  Args:
+      df (pandas DataFrame): It take the pd file 
+      file_name (str): it saved the plot file
+      model : it is the traiened model
+  """
   def _create_base_plot(df):
     df.plot(kind="scatter", x="x1", y="x2", c="y", s=100, cmap="winter")
     plt.axhline(y=0, color="black", linestyle="--", linewidth=1)
